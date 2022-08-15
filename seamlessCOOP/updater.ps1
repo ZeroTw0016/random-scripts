@@ -1,13 +1,21 @@
 $versionFile = "$env:APPDATA/ZeroCode/SeamlessCOOP/version.txt"
+$rawScriptUrl = "https://raw.githubusercontent.com/ZeroTw0016/random-scripts/main/seamlessCOOP/updater.ps1"
+$onVerUrl = "https://raw.githubusercontent.com/ZeroTw0016/random-scripts/main/seamlessCOOP/version"
 
 if(Test-Path -Path $versionFile) {
     $ver = Get-Content -Path $versionFile
+    $onVer = ((Invoke-WebRequest -Uri $onVerUrl)).content | Out-String
+    if(!$ver -eq $onVer) {
+        Write-host "Script Updating"
+        $script = ((Invoke-WebRequest -Uri $rawScriptUrl)).content | Out-String
+        Set-Content ./updater.ps1 -Value $script
+    }
 }
 else {
     New-Item -Path $versionFile -ItemType "File"
 }
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$downloads = "$HOME/Downloads"
+$tmp = "$HOME/ZeroTMP"
 
 $url = 'https://github.com/LukeYui/EldenRingSeamlessCoopRelease/releases/latest'
 $request = [System.Net.WebRequest]::Create($url)
@@ -17,6 +25,6 @@ $version = $realTagUrl.split('/')[-1].Trim('v')
 
 $site = ((Invoke-WebRequest -Uri $realTagUrl).Links.href) -like "/LukeYui/EldenRingSeamlessCoopRelease/releases/download/*" | Select-Object -first 1 | Out-String
 $site = "https://github.com/$site"
-#Invoke-WebRequest -Uri $site -OutFile "$downloads/seamlessCOOP-$version.zip"
+Invoke-WebRequest -Uri $site -OutFile "$tmp/seamlessCOOP-$version.zip"
 
 ## Add auto folder mgmt
