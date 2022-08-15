@@ -17,6 +17,30 @@ $steamFolders = @()
 Write-Host "Checking Updates and installing if there are any"
 
 
+$program = Get-ChildItem $env:ProgramFiles
+$program86 = Get-ChildItem ${env:ProgramFiles(x86)}
+
+foreach($folder in $program) {
+    foreach($folder in $content) {
+        if($folder.Name -eq "SteamLibrary") {
+            $steamFolders += $folder.FullName
+        }
+        if($folder.Name -eq "Steam") {
+            $steamFolders += $folder.FullName
+        }
+    }
+}
+foreach($folder in $program86) {
+    foreach($folder in $content) {
+        if($folder.Name -eq "SteamLibrary") {
+            $steamFolders += $folder.FullName
+        }
+        if($folder.Name -eq "Steam") {
+            $steamFolders += $folder.FullName
+        }
+    }
+}
+
 foreach($drive in $drives) {
     $path = $drive.Root
     $content = Get-ChildItem $path -Force -Directory -ErrorAction SilentlyContinue
