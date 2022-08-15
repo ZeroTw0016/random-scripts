@@ -14,6 +14,7 @@ $modVer = $modVers
 $eldenFolder = ""
 $steamFolders = @()
 
+Write-Host "Checking Updates"
 
 function replaceLine($textContent,$match,$updateLineContent){
     $line = $textContent | Select-String $match | Select-Object -ExpandProperty Line
@@ -69,6 +70,7 @@ $site = ((Invoke-WebRequest -Uri $url).Links.href) -like "*/download/*" | Select
 $site = "https://github.com/$site"
 $fileName = ([uri]$site).Segments[-1]
 if($fileName -ne $modVer) {
+    Write-host "Mod Updating"
     Invoke-WebRequest -Uri $site -OutFile "$tmp/$fileName"
     Expand-Archive -Path "$tmp/$fileName" -DestinationPath "$tmp/" -Force
     Remove-Item -Path "$tmp/$fileName"
@@ -97,3 +99,7 @@ if($fileName -ne $modVer) {
 else {
     Write-Host "no update needed Launching the game"
 }
+
+Set-Location $eldenFolder
+.\launch_elden_ring_seamlesscoop.exe
+exit
