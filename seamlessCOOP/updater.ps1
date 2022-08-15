@@ -1,3 +1,4 @@
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $versionFile = "$env:APPDATA/ZeroCode/SeamlessCOOP/version.txt"
 $rawScriptUrl = "https://raw.githubusercontent.com/ZeroTw0016/random-scripts/main/seamlessCOOP/updater.ps1"
 $onVerUrl = "https://raw.githubusercontent.com/ZeroTw0016/random-scripts/main/seamlessCOOP/version"
@@ -9,7 +10,7 @@ if(Test-Path -Path $versionFile) {
         Write-host "Script Updating"
         $script = ((Invoke-WebRequest -Uri $rawScriptUrl)).content | Out-String
         Set-Content ./updater.ps1 -Value $script
-        ./updater.ps1
+        start powershell {.\updater.ps1}
         exit
     }
 }
