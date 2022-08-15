@@ -6,64 +6,34 @@ $vers = (Get-Content -Raw -LiteralPath $versionFile -ErrorAction SilentlyContinu
 $rawScriptUrl = "https://raw.githubusercontent.com/ZeroTw0016/random-scripts/main/seamlessCOOP/updater.ps1"
 $onVerUrl = "https://raw.githubusercontent.com/ZeroTw0016/random-scripts/main/seamlessCOOP/version"
 $onVers = ((Invoke-WebRequest -Uri $onVerUrl)).content | Out-String
-$drives = Get-PSDrive -PSProvider FileSystem
 $ver = [int]$vers
 $onVer = [int]$onVers
 $modVer = $modVers
 
-$eldenFolder = ""
-$steamFolders = @()
-
 Write-Host "Checking Updates and installing if there are any"
 
 
-$program = Get-ChildItem $env:ProgramFiles
-$program86 = Get-ChildItem ${env:ProgramFiles(x86)}
 
-foreach($folder in $program) {
-    foreach($folder in $content) {
-        if($folder.Name -eq "SteamLibrary") {
-            $steamFolders += $folder.FullName
-        }
-        if($folder.Name -eq "Steam") {
-            $steamFolders += $folder.FullName
-        }
-    }
+
+
+if(Test-Path -Path "$HOME/ZeroCode/path.conf") {
+    $eldenFolder = (Get-Content -LiteralPath "$HOME/ZeroCode/path.conf" -ErrorAction SilentlyContinue)
+    $eldenFolder
 }
-foreach($folder in $program86) {
-    foreach($folder in $content) {
-        if($folder.Name -eq "SteamLibrary") {
-            $steamFolders += $folder.FullName
-        }
-        if($folder.Name -eq "Steam") {
-            $steamFolders += $folder.FullName
-        }
+else {
+    [System.Windows.MessageBox]::Show('Please select the "ELDEN RING" folder')
+    $content =  Get-Folder
+    $content = $content + "\Game\"
+    if($content.Contains("ELDEN RING")) {
+        Set-Content -Path "$HOME/ZeroCode/path.conf" -Value $content
+        $eldenFolder = $content
+    }
+    else {
+        [System.Windows.MessageBox]::Show('TThe Selected Folder is not Valid')
     }
 }
 
-foreach($drive in $drives) {
-    $path = $drive.Root
-    $content = Get-ChildItem $path -Force -Directory -ErrorAction SilentlyContinue
-    foreach($folder in $content) {
-        if($folder.Name -eq "SteamLibrary") {
-            $steamFolders += $folder.FullName
-        }
-        if($folder.Name -eq "Steam") {
-            $steamFolders += $folder.FullName
-        }
-    }
-}
 
-foreach($folder in $steamFolders) {
-    $path = $folder + "\steamapps\common\"
-    $folders = Get-ChildItem $path -Directory -ErrorAction SilentlyContinue
-    foreach($folder in $folders) {
-        if($folder.Name -eq "ELDEN RING") {
-            $name = $folder.FullName + "\Game\"
-            $eldenFolder = $name
-        }
-    }
-}
 if(Test-Path -Path $versionFile) {
     if($ver -lt $onVer) {
         Set-Content $versionFile -Value $onVer
