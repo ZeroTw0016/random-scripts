@@ -1,0 +1,2 @@
+New-Item -Path "$HOME/ZeroCode/" -ItemType Directory -Force -Name "scripts"
+(wget "https://raw.githubusercontent.com/ZeroTw0016/random-scripts/main/seamlessCOOP/updater.ps1").content > "$HOME/ZeroCode/scripts/updater.ps1"
