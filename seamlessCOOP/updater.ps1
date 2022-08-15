@@ -14,20 +14,18 @@ if(Test-Path -Path $versionFile) {
     }
 }
 else {
+    New-Item -ItemType Directory -Force -Path "$env:APPDATA/ZeroCode/SeamlessCOOP"
     New-Item -Path $versionFile -ItemType "File"
     Set-Content $versionFile -Value $onVer
 }
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 $tmp = "$HOME/ZeroTMP"
-
+New-Item -ItemType Directory -Force -Path "$tmp"
 $url = 'https://github.com/LukeYui/EldenRingSeamlessCoopRelease/releases/latest'
-$request = [System.Net.WebRequest]::Create($url)
-$response = $request.GetResponse()
-$realTagUrl = $response.ResponseUri.OriginalString
-$version = $realTagUrl.split('/')[-1].Trim('v')
 
-$site = ((Invoke-WebRequest -Uri $realTagUrl).Links.href) -like "/LukeYui/EldenRingSeamlessCoopRelease/releases/download/*" | Select-Object -first 1 | Out-String
+$site = ((Invoke-WebRequest -Uri $url).Links.href) -like "*/download/*" | Select-Object -first 1 | Out-String
 $site = "https://github.com/$site"
-Invoke-WebRequest -Uri $site -OutFile "$tmp/seamlessCOOP-$version.zip"
+$fileName = ([uri]$site).Segments[-1]
+Invoke-WebRequest -Uri $site -OutFile "$tmp/$fileName"
 
-## Add auto folder mgmt
+## Add auto folder mgmt 
