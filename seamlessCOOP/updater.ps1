@@ -1,12 +1,15 @@
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $versionFile = "$HOME/ZeroCode/version.txt"
-$vers = (Get-Content -Raw -LiteralPath $versionFile)
+$modVersionFile = "$HOME/ZeroCode/mod_version.txt"
+$modVers = (Get-Content -Raw -LiteralPath $modVersionFile -ErrorAction SilentlyContinue)
+$vers = (Get-Content -Raw -LiteralPath $versionFile -ErrorAction SilentlyContinue)
 $rawScriptUrl = "https://raw.githubusercontent.com/ZeroTw0016/random-scripts/main/seamlessCOOP/updater.ps1"
 $onVerUrl = "https://raw.githubusercontent.com/ZeroTw0016/random-scripts/main/seamlessCOOP/version"
 $onVers = ((Invoke-WebRequest -Uri $onVerUrl)).content | Out-String
 $drives = Get-PSDrive -PSProvider FileSystem
 $ver = [int]$vers
 $onVer = [int]$onVers
+$modVer = $modVers
 
 foreach($drive in $drives) {
     #Write-Host $drive
