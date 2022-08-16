@@ -31,7 +31,6 @@ Write-Host "Checking Updates and installing if there are any"
 
 $tmp = "$HOME/ZeroCode/ZeroTMP"
 New-Item -ItemType Directory -Force -Path "$tmp" | Out-Null
-New-Item -ItemType File -Force -Path "$modVersionFile" | Out-Null
 $url = 'https://github.com/LukeYui/EldenRingSeamlessCoopRelease/releases/latest'
 
 $site = ((Invoke-WebRequest -Uri $url).Links.href) -like "*/download/*" | Select-Object -first 1 | Out-String
@@ -63,11 +62,9 @@ foreach($line in $settings) {
 $tmpSettings = Get-Content -Path $tmpsettingsFile -ErrorAction SilentlyContinue
 $tmpSettings -replace '^[^;]*\=+ $',$pwd | Set-Content $tmpsettingsFile
 Move-Item -Path $tmpsettingsFile -Destination $coopFolder -Force
-Set-Content -Path $modVersionFile -Value $fileName
 
 
 Remove-Item $tmp -Force -Recurse
 Set-Location $eldenFolder
 .\launch_elden_ring_seamlesscoop.exe
 exit
-#>
