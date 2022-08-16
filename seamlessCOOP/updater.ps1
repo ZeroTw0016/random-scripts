@@ -48,6 +48,8 @@ $tmpsettingsFile = $tmp + "/SeamlessCoop/seamlesscoopsettings.ini"
 $dll = $coopFolder + "/elden_ring_seamless_coop.dll"
 Remove-Item -Path $dll -Force
 Move-Item -Path "$tmp/SeamlessCoop/elden_ring_seamless_coop.dll" -Destination $coopFolder -Force
+
+
 $settings = Get-Content -Path $settingsFile -ErrorAction SilentlyContinue
 foreach($line in $settings) {
     if(!$line.contains(";") -and !$line.contains("[") -and $line -ne "") {
@@ -57,14 +59,23 @@ foreach($line in $settings) {
         if($leftPart -like "cooppassword ") {
             $pwd = "cooppassword =" + $rightPart
         }
+        if($leftPart -like "playerhud ") {
+            $hud = "playerhud =" + $rightPart
+        }
+        if($leftPart -like "dockplayerhud ") {
+            $dockhud = "dockplayerhud =" + $rightPart
+        }
+        
     }
 }
+
 $tmpSettings = Get-Content -Path $tmpsettingsFile -ErrorAction SilentlyContinue
-$tmpSettings -replace '^[^;]*\=+ $',$pwd | Set-Content $tmpsettingsFile
+$tmpSettings = $tmpSettings -replace '^cooppassword.*$',$pwd -replace('^playerhud.*$',$hud) -replace('^dockplayerhud.*$',$dockhud)
+$tmpSettings | Set-Content $tmpsettingsFile
 Move-Item -Path $tmpsettingsFile -Destination $coopFolder -Force
 
 
 Remove-Item $tmp -Force -Recurse
 Set-Location $eldenFolder
-.\launch_elden_ring_seamlesscoop.exe
+#.\launch_elden_ring_seamlesscoop.exe
 exit
