@@ -77,5 +77,5 @@ Move-Item -Path $tmpsettingsFile -Destination $coopFolder -Force
 
 Remove-Item $tmp -Force -Recurse
 Set-Location $eldenFolder
-#.\launch_elden_ring_seamlesscoop.exe
+.\launch_elden_ring_seamlesscoop.exe
 exit
