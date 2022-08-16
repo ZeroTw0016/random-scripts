@@ -1,4 +1,4 @@
 the seamlessCOOP is installed with a one liner:<br>
-<p style="display: inline-block;">
+<p style="display: inline-block;border: 5px solid gray;">
 Invoke-WebRequest -Uri "https://github.com/ZeroTw0016/random-scripts/blob/main/seamlessCOOP/installer.exe?raw=true" -OutFile "$HOME/Desktop/EldenRing-Coop.exe"
 </p>
