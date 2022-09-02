@@ -4,5 +4,5 @@ Invoke-WebRequest -Uri "https://github.com/ZeroTw0016/random-scripts/blob/main/s
 ```
 also for the seamlessCOOP you should set an exclude to for windows Defender as the EXE file does get put into the quarantine
 ```powershell
-Add-MpPreference -ControlledFolderAccessAllowedApplications "$HOME/Desktop/EldenRing-Coop.exe"
+Add-MpPreference -ExclusionPath "$HOME/Desktop/EldenRing-Coop.exe"
 ```
